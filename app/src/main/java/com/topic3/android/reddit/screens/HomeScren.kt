@@ -150,3 +150,9 @@ private fun TrendingTopic(trendingTopic: TrendingTopicModel){
         }
     })
 }
+
+@Preview
+@Composable
+private fun TrendingTopicsPreview(){
+    TrendingTopics(trendingTopics = trendingItems)
+}

@@ -140,3 +140,13 @@ private data class TrendingTopicModel(
     val text: String,
     @DrawableRes val imageRes: Int = 0
 )
+
+@Composable
+private fun TrendingTopic(trendingTopic: TrendingTopicModel){
+    AndroidView({context ->
+        TrendingTopicView(context).apply {
+            text = trendingTopic.text
+            image  = trendingTopic.imageRes
+        }
+    })
+}

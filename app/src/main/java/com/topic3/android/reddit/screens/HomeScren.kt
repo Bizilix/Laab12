@@ -57,3 +57,54 @@ private val trendingItems = listOf( TrendingTopicModel(
         R.drawable.deeplinking
     ),
 )
+
+@Composable
+fun HomeScreen(viewModel: MainViewModel) {
+    val posts: List<PostModel>
+            by viewModel.allPosts.observeAsState(listOf())
+
+    var isToastVisible by remember { mutableStateOf(false) }
+    val onJoinClickAction: (Boolean) -> Unit ={joined ->
+        isToastVisible=joined
+        if (isToastVisible){
+            Timer().schedule(3000){isToastVisible = false}
+        }
+    }
+    val homeScreenItem = mapHomeScreenItems(posts)
+    Box(modifier = Modifier.fillMaxSize()){
+        LazyColumn(
+            modifier = Modifier
+                .background(color = MaterialTheme.colors.secondary),
+            content = {
+                items(
+                    items = homeScreenItem,
+                    itemContent = { item ->
+                        if (item.type == HomeScreenItemType.TRENDING) {
+                            TrendingTopics(
+                                trendingTopics = trendingItems,
+                                modifier = Modifier.padding(
+                                    top = 16.dp, bottom = 6.dp
+                                )
+                            )
+                        } else if (item.post != null) {
+                            val post = item.post
+                            if (post.type==PostType.TEXT){
+                                TextPost(
+                                    post = post,
+                                    onJoinButtonClick = onJoinClickAction
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(6.dp))
+                        }
+                    })
+            }
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        ){
+            JoinedToast(visible = isToastVisible)
+        }
+    }
+}

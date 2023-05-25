@@ -168,3 +168,55 @@ private fun TrendingTopicPreview() {
         )
     )
 }
+
+@Composable
+
+private fun TrendingTopics(
+    trendingTopics: List<TrendingTopicModel>,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        shape = MaterialTheme.shapes.large,
+        modifier = modifier
+    ){
+        Column(modifier = Modifier.padding(vertical = 8.dp)) {
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Icon(
+                    modifier = Modifier.size(18.dp),
+                    imageVector = Icons.Filled.Star,
+                    tint = Color.Blue,
+                    contentDescription = "Star Icon"
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = "Trending Today",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            LazyRow(
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    top = 8.dp,
+                    end = 16.dp
+                ),
+                content = {
+                    itemsIndexed(
+                        items = trendingTopics,
+                        itemContent = {index,
+                                       trendingModel ->
+                            TrendingTopic(trendingModel)
+                            if (index != trendingTopics.lastIndex){
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
+                        }
+                    )
+                }
+            )
+        }
+    }
+}
